@@ -1,0 +1,5 @@
+OPENAI_API_KEY=sk-proj--ㅁ
+
+
+MONGO_URI=mongodb+srv://aijinpd_db_user:<비밀번호를 입력하세요>@cluster0.k6hecbp.mongodb.net/chatbot_db?retryWrites=true&w=majority
+FLASK_SECRET_KEY=chat_secret_key_global_2026
