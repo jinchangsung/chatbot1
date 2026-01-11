@@ -67,13 +67,3 @@ If nothing happens or an error occurs after entering the above command, the most
 
 🛠️ **Last but not least, check the port**
 🛠️ **If you have any questions, please E-mail me. (ai.jinpd@gmail.com)**
-
-
-
-    
-
-
-
-
-
-To watch usage guides, visit [https://docs.arkain.io](https://docs.arkain.io/).
