@@ -16,15 +16,15 @@
                 <div class="status-dot"></div>
             </div>
             <div class="header-text">
-                <h1>Global Support AI</h1>
-                <p>24/7 다국어 실시간 상담 서비스</p>
+                <h1>Global JINPD AI</h1>
+                <p>ai.jinpd 다국어 실시간 상담 서비스</p>
             </div>
         </header>
 
         <div id="chat-box" class="chat-box">
             <div class="msg-wrapper bot-wrapper">
                 <img src="{{ url_for('static', filename='images/bot_icon.png') }}" class="chat-icon">
-                <div class="message bot">안녕하세요,무엇이든 물어보세요. 입력하신 언어로 답변해 드립니다.</div>
+                <div class="message bot">안녕하세요, 무엇이든 물어보세요. 입력하신 언어로 답변해 드립니다.</div>
             </div>
         </div>
 
@@ -37,44 +37,10 @@
     </div>
 
     <script>
-        function appendMessage(role, text) {
-            let html = '';
-            if (role === 'user') {
-                html = `<div class="msg-wrapper user-wrapper"><div class="message user">${text}</div></div>`;
-            } else {
-                html = `
-                    <div class="msg-wrapper bot-wrapper">
-                        <img src="/static/images/bot_icon.png" class="chat-icon">
-                        <div class="message bot">${text.replace(/\n/g, '<br>')}</div>
-                    </div>`;
-            }
-            $('#chat-box').append(html);
-            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
-        }
-
-        function sendMessage() {
-            const msg = $('#user-input').val().trim();
-            if (!msg) return;
-
-            appendMessage('user', msg);
-            $('#user-input').val('');
-
-            $.ajax({
-                url: '/chat',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ message: msg }),
-                success: function(data) {
-                    appendMessage('bot', data.reply);
-                },
-                error: function() {
-                    appendMessage('bot', '죄송합니다. 서버와 연결이 원활하지 않습니다.');
-                }
-            });
-        }
-
-        $('#send-btn').click(sendMessage);
-        $('#user-input').keypress(e => { if(e.which == 13) sendMessage(); });
+        // 중요: 외부 JS 파일이 Jinja2 문법을 모르기 때문에,
+        // 여기서 미리 봇 아이콘 경로를 전역 변수로 선언하여 넘겨줍니다.
+        const BOT_ICON_URL = "{{ url_for('static', filename='images/bot_icon.png') }}";
     </script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
 </html>
