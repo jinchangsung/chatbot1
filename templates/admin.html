@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Admin</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f7f6; }
+        .user-group { background: white; margin-bottom: 20px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .user-id { font-weight: bold; color: #007bff; margin-bottom: 10px; }
+        .chat-line { margin: 5px 0; padding: 5px; border-bottom: 1px solid #eee; }
+        .role-user { color: #333; }
+        .role-bot { color: #28a745; background: #f0fff4; }
+    </style>
+</head>
+<body>
+    <h1>실시간 대화 모니터링</h1>
+    <div id="history-container">데이터를 불러오는 중...</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadData() {
+            $.get('/api/admin/history', function(data) {
+                const container = $('#history-container');
+                container.empty();
+                
+                if (data.length === 0) {
+                    container.html('<p>아직 저장된 대화가 없습니다.</p>');
+                    return;
+                }
+
+                // 데이터를 사용자(user_id)별로 묶어서 표시
+                const grouped = {};
+                data.forEach(item => {
+                    if (!grouped[item.user_id]) grouped[item.user_id] = [];
+                    grouped[item.user_id].push(item);
+                });
+
+                for (const userId in grouped) {
+                    let html = `<div class="user-group"><div class="user-id">User: ${userId}</div>`;
+                    grouped[userId].forEach(msg => {
+                        html += `<div class="chat-line role-${msg.role}"><strong>${msg.role}:</strong> ${msg.message}</div>`;
+                    });
+                    html += `</div>`;
+                    container.append(html);
+                }
+            });
+        }
+        
+        // 5초마다 자동으로 데이터를 갱신합니다.
+        setInterval(loadData, 5000);
+        loadData();
+    </script>
+</body>
+</html>
